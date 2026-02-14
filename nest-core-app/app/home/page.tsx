@@ -1,17 +1,14 @@
-import { createClient } from "@/lib/supabase/server";
-import { Suspense } from "react";
+"use client";
 
-async function InstrumentsData() {
-  const supabase = await createClient();
-  const { data: instruments } = await supabase.from("households").select();
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-  return <pre>{JSON.stringify(instruments, null, 2)}</pre>;
-}
-
-export default function Instruments() {
+export default function HomePage() {
   return (
-    <Suspense fallback={<div>Loading instruments...</div>}>
-      <InstrumentsData />
-    </Suspense>
+    <div>
+      <h1>Home Page</h1>
+      <p>Welcome to the home page!</p>
+    </div>
   );
 }

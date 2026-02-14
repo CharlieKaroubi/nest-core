@@ -23,7 +23,7 @@ export function GoogleSignInButton() {
     <div className="mt-8 flex items-center gap-3">
       <button
         onClick={handleSignIn}
-        className="inline-flex items-center gap-2 rounded-full bg-white/95 px-5 py-3 mb:4 text-gray-800 shadow hover:bg-white"
+        className="inline-flex items-center gap-2 rounded-full bg-white/95 px-5 py-3 mb:4 text-gray-800 shadow hover:transform hover:scale-[1.03] transition-transform duration-100"
         aria-label="Sign in with rice.edu"
       >
         <Image

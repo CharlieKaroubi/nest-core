@@ -14,11 +14,13 @@ export default function LandingPage() {
       <Image
         src="/nest-core.png"
         alt="NestCore Logo"
-        width={200}
-        height={200}
+        width={150}
+        height={150}
       />
-      <div className="flex flex-col items-center justify-center mt-20">
-        <h1 className={`text-8xl ${pacifico.className}`}>NestCore</h1>
+      <div className="flex flex-col items-center justify-center mt-36 gap-6">
+        <h1 className={`text-8xl text-blue-900 ${pacifico.className}`}>
+          NestCore
+        </h1>
         <GoogleSignInButton />
       </div>
     </div>
