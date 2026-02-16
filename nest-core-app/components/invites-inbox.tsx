@@ -47,6 +47,7 @@ export default function InvitesInbox() {
   const supabase = createClient();
   const user = useCurrentUser();
   const [invites, setInvites] = useState<Invite[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let channel: ReturnType<typeof supabase.channel> | null = null;
@@ -67,6 +68,7 @@ export default function InvitesInbox() {
         } else {
           setInvites(data);
         }
+        setLoading(false);
       };
 
       fetchInvites();
@@ -124,11 +126,18 @@ export default function InvitesInbox() {
       <div className="flex flex-row gap-2 items-center mb-4">
         <MdOutlineMailOutline className="text-1xl text-blue-500 flex-shrink-0" />
         <h2 className="text-lg font-bold text-gray-700">Invitations</h2>
-        <div className="bg-blue-500 w-4 h-4 rounded-full flex items-center justify-center p-3">
-          <p className="text-xs text-white font-bold">{invites.length}</p>
-        </div>
+        {!loading && (
+          <div className="bg-blue-500 w-4 h-4 rounded-full flex items-center justify-center p-3">
+            <p className="text-xs text-white font-bold">{invites.length}</p>
+          </div>
+        )}
       </div>
-      {invites.length === 0 ? (
+      {/*TODO: Add skeleton loader here*/}
+      {loading ? (
+        <div className="animate-pulse">
+          <div className="h-[8vh] bg-gray-200 rounded"></div>
+        </div>
+      ) : invites.length === 0 ? (
         <p className="text-gray-600">
           You don't have any pending invitations at the moment
         </p>
