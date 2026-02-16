@@ -10,17 +10,19 @@ interface User {
 
 export default function NavBar({ user }: { user: User | null }) {
   return (
-    <nav className="bg-gray-100 shadow-md flex items-center">
-      <Image
-        src={user?.avatar_url || "/default-avatar.png"}
-        alt="User Avatar"
-        width={40}
-        height={40}
-        className="w-10 h-10 rounded-full m-2"
-      />
-      <h1 className="text-xl font-bold text-blue-900">
-        {user?.name || "Guest"}
-      </h1>
+    <nav className="bg-gray-100 shadow-md flex items-center h-16">
+      {user && (
+        <>
+          <Image
+            src={user.avatar_url}
+            alt="User Avatar"
+            width={30}
+            height={30}
+            className="w-10 h-10 rounded-full m-2"
+          />
+          <h1 className="text-xl font-bold text-blue-900">{user.name}</h1>
+        </>
+      )}
     </nav>
   );
 }

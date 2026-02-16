@@ -1,10 +1,11 @@
 "use client";
 
+import InvitesInbox from "@/components/invites-inbox";
 import NavBar from "@/components/nav-bar";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { FaHome } from "react-icons/fa";
 import { FaExclamationCircle } from "react-icons/fa";
-import { MdOutlineMailOutline } from "react-icons/md";
+import { createClient } from "@/lib/supabase/client";
 
 export default function JoinHouseholdPage() {
   const user = useCurrentUser();
@@ -25,18 +26,7 @@ export default function JoinHouseholdPage() {
         {/* Main content for joining or creating a household */}
         <div className="flex flex-col items-center bg-gray-100 rounded-lg shadow-lg p-6 gap-6 w-full">
           {/* Invitations section */}
-          <div className="bg-gray-100 rounded-lg shadow-md p-4 w-full">
-            <div className="flex flex-row gap-2 items-center mb-4">
-              <MdOutlineMailOutline className="text-1xl text-blue-500 flex-shrink-0" />
-              <h2 className="text-lg font-bold text-gray-700">Invitations</h2>
-              <div className="bg-blue-500 w-4 h-4 rounded-full flex items-center justify-center p-3">
-                <p className="text-xs text-white font-bold">0</p>
-              </div>
-            </div>
-            <p className="text-gray-600">
-              You don't have any pending invitations at the moment
-            </p>
-          </div>
+          <InvitesInbox />
           {/* Create household section */}
           <div className="flex flex-col items-center gap-4 bg-white rounded-lg shadow-md p-6 w-full">
             <FaHome className="text-9xl text-blue-500" />
