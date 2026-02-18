@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 interface User {
   id: string;
@@ -8,7 +11,9 @@ interface User {
   created_at: string;
 }
 
-export default function NavBar({ user }: { user: User | null }) {
+export default function NavBar() {
+  const user = useCurrentUser();
+
   return (
     <nav className="bg-gray-100 shadow-md flex items-center h-16">
       {user && (

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins, Pacifico } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
+import NavBarWrapper from "@/components/nav-bar-wrapper";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -20,6 +21,12 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
+export const pacifico = Pacifico({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-pacifico",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${poppins.className} antialiased bg-gray-200 text-blue-900`}
+        className={`${poppins.className} antialiased bg-gray-200 text-blue-900 ${pacifico.variable}`}
       >
         <ThemeProvider
           attribute="class"
@@ -36,6 +43,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <NavBarWrapper />
           {children}
         </ThemeProvider>
       </body>

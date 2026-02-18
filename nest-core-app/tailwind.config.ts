@@ -58,6 +58,9 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
     },
+    fontFamily: {
+      pacifico: ["var(--font-pacifico)"],
+    },
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;

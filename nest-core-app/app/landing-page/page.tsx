@@ -1,28 +1,10 @@
 import { GoogleSignInButton } from "@/components/google-sign-in";
-import Image from "next/image";
-
-import { Pacifico } from "next/font/google";
-
-const pacifico = Pacifico({
-  subsets: ["latin"],
-  weight: "400",
-});
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen">
-      <Image
-        src="/nest-core.png"
-        alt="NestCore Logo"
-        width={150}
-        height={150}
-      />
-      <div className="flex flex-col items-center justify-center mt-36 gap-6">
-        <h1 className={`text-8xl text-blue-900 ${pacifico.className}`}>
-          NestCore
-        </h1>
-        <GoogleSignInButton />
-      </div>
+    <div className="min-h-screen flex flex-col items-center justify-center gap-6">
+      <h1 className="text-8xl text-blue-900 font-pacifico">NestCore</h1>
+      <GoogleSignInButton />
     </div>
   );
 }

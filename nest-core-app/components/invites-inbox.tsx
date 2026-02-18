@@ -6,8 +6,9 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
+import { useRouter } from "next/navigation";
 
-export type Invite = {
+type Invite = {
   id: string;
   household_id: string;
   inviter_id: string;
@@ -46,8 +47,43 @@ const createdAtToTimeAgo = (createdAt: string) => {
 export default function InvitesInbox() {
   const supabase = createClient();
   const user = useCurrentUser();
+  const router = useRouter();
   const [invites, setInvites] = useState<Invite[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const handleAccept = async (inviteId: string, householdId: string) => {
+    // Update invite status to accepted
+    const { error } = await supabase
+      .from("household_invitations")
+      .update({ status: "accepted", responded_at: new Date().toISOString() })
+      .eq("id", inviteId);
+    if (error) {
+      console.error("Error accepting invite:", error);
+    }
+
+    // Add user to household_members
+    const { error: memberError } = await supabase
+      .from("household_members")
+      .insert({
+        user_id: user!.id,
+        household_id: householdId,
+      });
+
+    if (memberError) {
+      console.error("Error adding user to household:", memberError);
+    }
+    router.push(`/household/${householdId}`);
+  };
+
+  const handleDecline = async (inviteId: string) => {
+    const { error } = await supabase
+      .from("household_invitations")
+      .delete()
+      .eq("id", inviteId);
+    if (error) {
+      console.error("Error declining invite:", error);
+    }
+  };
 
   useEffect(() => {
     let channel: ReturnType<typeof supabase.channel> | null = null;
@@ -132,7 +168,6 @@ export default function InvitesInbox() {
           </div>
         )}
       </div>
-      {/*TODO: Add skeleton loader here*/}
       {loading ? (
         <div className="animate-pulse">
           <div className="h-[8vh] bg-gray-200 rounded"></div>
@@ -148,7 +183,7 @@ export default function InvitesInbox() {
               key={invite.id}
               className="bg-white p-2 rounded border border-gray-200"
             >
-              <div className="flex flex-row items-center justify-between">
+              <div className="flex flex-row items-center justify-between w-full">
                 <div className="flex flex-col gap-[1px]">
                   <b>{invite.households.name}</b>
                   <p className="text-sm text-gray-600">
@@ -158,12 +193,18 @@ export default function InvitesInbox() {
                     Sent {createdAtToTimeAgo(invite.created_at)}
                   </p>
                 </div>
-                <div className="flex flex-wrap gap-2 mb-0 md:mb-8 ml-10">
-                  <button className="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:transform hover:scale-[1.03] transition-transform duration-100 flex items-center">
+                <div className="flex flex-wrap gap-2 justify-end items-center mb-0 md:mb-7">
+                  <button
+                    className="bg-blue-500 text-white px-4 py-1 rounded-lg text-sm hover:transform hover:scale-[1.03] transition-transform duration-100 flex items-center justify-center w-[100px]"
+                    onClick={() => handleAccept(invite.id, invite.household_id)}
+                  >
                     <IoIosCheckmarkCircleOutline className="inline-block mr-1 text-md" />
                     Accept
                   </button>
-                  <button className="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs border border-gray-300 hover:transform hover:scale-[1.03] transition-transform duration-100 flex items-center">
+                  <button
+                    className="bg-gray-200 text-gray-700 px-4 py-1 rounded-lg text-sm border border-gray-300 hover:transform hover:scale-[1.03] transition-transform duration-100 flex items-center justify-center w-[100px]"
+                    onClick={() => handleDecline(invite.id)}
+                  >
                     <IoIosRemoveCircleOutline className="inline-block mr-1 text-md" />
                     Decline
                   </button>
